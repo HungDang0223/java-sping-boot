@@ -14,5 +14,5 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Order> findByStatus(String status);
 
     // Ví dụ về Custom Query (Tìm đơn hàng của một khách hàng cụ thể)
-    List<Order> findByCustomer_CustomerNumber(Integer customerNumber);
+    // List<Order> findByCustomer_CustomerNumber(Integer customerNumber);
 }

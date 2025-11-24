@@ -3,8 +3,12 @@ package first_project.example.demo.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import first_project.example.demo.dto.CustomerGetOrdersResponseDto;
+import first_project.example.demo.mapper.CustomerMapper;
 import first_project.example.demo.models.Customer;
 import first_project.example.demo.repositories.CustomerRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,10 +17,11 @@ import java.util.Optional;
 public class CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
 
-    @Autowired
-    public CustomerService(CustomerRepository customerRepository) {
+    public CustomerService(CustomerRepository customerRepository, CustomerMapper customerMapper) {
         this.customerRepository = customerRepository;
+        this.customerMapper = customerMapper;
     }
 
     // 1. Lấy tất cả
@@ -30,6 +35,7 @@ public class CustomerService {
     }
 
     // 3. Thêm/Cập nhật
+    @Transactional
     public Customer saveCustomer(Customer customer) {
         // Logic nghiệp vụ: Ví dụ: Không cho phép creditLimit vượt quá 200,000
         /*
@@ -49,4 +55,14 @@ public class CustomerService {
     public List<Customer> getCustomersByCountry(String country) {
         return customerRepository.findByCountry(country);
     }
+
+    // 6.Lấy danh sách đơn hnagf của khách hàng
+    public CustomerGetOrdersResponseDto getCustomerWithOrders(Integer customerNumber) {
+        Customer customer = customerRepository
+            .findByIdWithOrders(customerNumber)
+            .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
+        
+        return customerMapper.toDto(customer);
+    }
+    
 }

@@ -5,7 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "customers")
@@ -52,7 +55,8 @@ public class Customer {
     // private Set<Payment> payments;
 
     // // Mối quan hệ 1-nhiều với Orders
-    // @ManyToOne(fetch = FetchType.LAZY)
-    // @OneToMany(mappedBy = "customerNumber", cascade = CascadeType.ALL)
-    // private Set<Order> orders;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_number", insertable = false, updatable = false)
+    @JsonIgnore  // Tránh serialize vô tình
+    private List<Order> orders;
 }

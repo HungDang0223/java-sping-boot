@@ -36,10 +36,13 @@ public class Order {
     @Column(name = "comments")
     private String comments;
 
+    @Column(name = "customer_number", nullable = false)
+    private Integer customerNumber;
+
     // Mối quan hệ nhiều-1 với Customer (Khóa ngoại customerNumber)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customerNumber", nullable = false)
-    private Customer customer;
+    // @ManyToOne(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "customer_number", nullable = false)
+    // private Customer customer;
 
     // Mối quan hệ 1-nhiều với OrderDetails
     // @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
